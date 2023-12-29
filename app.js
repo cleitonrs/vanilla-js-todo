@@ -8,21 +8,27 @@ form.addEventListener('submit', event => {
   const todo = event.target.add.value.trim()
   if (todo.length) {
     ul.innerHTML += `
-      <li class="list-group-item d-flex justify-content-between align-items-center">
+      <li class="list-group-item d-flex justify-content-between align-items-center" data-todo="${todo}">
         <span>${todo}</span>
-        <i class="far fa-trash-alt delete"></i>
+        <i class="far fa-trash-alt" data-trash="${todo}"></i>
       </li>
     `
   }
   event.target.reset()
 })
 
+const removeTodo = clickedElement => {
+  const trashDataValue = clickedElement.dataset.trash
+  const todo = document.querySelector(`[data-todo="${trashDataValue}"]`)
+
+  if (trashDataValue) {
+    todo.remove()
+  }
+}
+
 ul.addEventListener('click', event => {
   const clickedElement = event.target
-
-  if (Array.from(clickedElement.classList).includes('delete')) {
-    clickedElement.parentElement.remove()
-  }
+  removeTodo(clickedElement)
 })
 
 inputSearchTodo.addEventListener('input', event => {
